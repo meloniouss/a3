@@ -1,6 +1,9 @@
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+
 //to do: search for words, search words with x first letter
 //write to a txt file
-//etc perchance
+//etc. perchance
 public class VocabList{
       VocabNode head;
       VocabNode tail;
@@ -108,6 +111,31 @@ public class VocabList{
             }
             return false;
 
+        }
+        public  void searchForLetter(String letter)
+        {
+
+            ArrayList<String> extractedList = new ArrayList<String>();
+            WordNode current = head;
+            while(current != null) {
+                if (current.word.substring(0, 1).equals(letter)) {
+                    extractedList.add(current.word);
+                }
+                current = current.next;
+
+            }
+
+            if (extractedList.size() > 1)
+            {
+                for(String word : extractedList)
+                {
+                    System.out.println(word);
+                }
+            }
+            else
+            {
+                System.out.println("No words with this letter have been found in this topic");
+            }
         }
 
         public void printWordList() {
@@ -287,7 +315,18 @@ public class VocabList{
        if(!current.vocabObject.words.searchFor(word))
            System.out.println("The word could not be found.");
     }
-
+    public void searchLetterInVocab(String letter)
+    {
+        VocabNode current = head;
+        if(current == null)
+            System.out.println("You haven't added any topics yet. Make sure to add some topics and words before searching.");
+        while(current !=null)
+        {
+            System.out.println("\nTopic: " + current.vocabObject.topic);
+            current.vocabObject.words.searchForLetter(letter);
+            current = current.next;
+        }
+    }
 
 }
 

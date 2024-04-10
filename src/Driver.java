@@ -61,6 +61,11 @@ public class Driver {
                 case 7:
                     importFile();
                     break;
+                case 8:
+                    searchLetters();
+                    break;
+                case 9:
+                    break;
                 case 0:
                     System.exit(0);
 
@@ -169,19 +174,26 @@ public class Driver {
 
     private static void removeTopic()
     {
-        Scanner input = new Scanner(System.in);
-        vocabList.printVocabList();
-        System.out.println("Choose which topic you would like to remove: ");
-        String toDelete = input.nextLine();
-        if(vocabList.findNodeByTopic(toDelete) != null)
-        {
-            vocabList.removeVocab(vocabList.findNodeByTopic(toDelete));
-            System.out.println("Topic " + toDelete + " has been successfully removed.");
-        }
-        else{
-            System.out.println("No topic named " + toDelete + " could be found. Please enter a valid topic.");
-            removeTopic();
-        }
+       try{
+           Scanner input = new Scanner(System.in);
+           vocabList.printVocabList();
+           System.out.println("Choose which topic you would like to remove: ");
+           int toDelete = input.nextInt();
+           if(vocabList.getVocabObjectAtIndex(toDelete) != null)
+           {
+               vocabList.removeVocab(vocabList.findNodeByTopic(vocabList.getVocabObjectAtIndex(toDelete).topic));
+               System.out.println("Topic " + "'" + vocabList.getVocabObjectAtIndex(toDelete).topic+ "'" + " has been successfully removed.");
+           }
+           else{
+               System.out.println("No topic named " + vocabList.getVocabObjectAtIndex(toDelete).topic + " could be found. Please enter a valid topic.");
+               removeTopic();
+           }
+       }
+       catch(InputMismatchException e)
+       {
+           System.out.println("\nInvalid input. Please enter an integer (0-9).");
+           removeTopic();
+       }
 
     }
     private static void importFile()
@@ -232,7 +244,7 @@ public class Driver {
             }
             if (vocabList.getVocabObjectAtIndex(choice) != null) {
                 System.out.println("Choose what you would like to do to this topic: ");
-                System.out.println("1. Add word\n2. Modify word 3. Delete word");
+                System.out.println("1. Add word\n2. Modify word\n3. Delete word");
                 int choice2 = topicScanner.nextInt();
                 switch(choice2)
                 {
@@ -243,6 +255,7 @@ public class Driver {
                         System.out.println(wordToAdd + " has been added successfully.");
                         break;
                     case 2:
+                        topicScanner.nextLine();
                         System.out.println("Please enter the word you would like to modify: ");
                         String wordToChange = topicScanner.nextLine();
                         System.out.println("Please enter the new word: ");
@@ -251,8 +264,9 @@ public class Driver {
                         System.out.println(wordToChange + " has been changed to " + newWord);
                         break;
                     case 3:
+                        topicScanner.nextLine();
                         System.out.println("Please enter the word you would like to delete: ");
-                        String toDelete = topicScanner.nextLine();
+                        String toDelete = topicScanner.nextLine().trim();
                         vocabList.getVocabObjectAtIndex(choice).words.removeWord(toDelete);
                         System.out.println(toDelete + " has been deleted successfully.");
                         break;
@@ -260,7 +274,6 @@ public class Driver {
                         System.out.println("Invalid choice.");
                         modifyTopic();
                         break;
-
                 }
             }
             else {
@@ -284,11 +297,32 @@ public class Driver {
     }
     private static void searchMethod()
     {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please enter which word you would like to search for: ");
-        String searchingFor = input.nextLine().trim();
-        vocabList.searchWordInVocab(searchingFor);
-        input.nextLine();
-        System.out.println("Test");
+        try {
+            Scanner input = new Scanner(System.in);
+            System.out.println("Please enter which word you would like to search for: ");
+            String searchingFor = input.nextLine().trim();
+            vocabList.searchWordInVocab(searchingFor);
+            input.nextLine();
+            System.out.println("Test");
+        }
+        catch(InputMismatchException e)
+        {
+            System.out.println("Invalid input. Please try again.");
+            searchMethod();
+        }
+    }
+    private static void searchLetters()
+    {
+        try{
+            Scanner input = new Scanner(System.in);
+            System.out.println("Enter the letter you would like the words to start with : ");
+            String letter = String.valueOf(input.next().charAt(0)); // first character of the word regardless of if the user enters a char or a string
+            vocabList.searchLetterInVocab(letter);
+        }
+        catch(InputMismatchException e)
+        {
+            System.out.println("Invalid input. Please try again.");
+            searchLetters();
+        }
     }
 }
