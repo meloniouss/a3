@@ -99,6 +99,16 @@ public class VocabList{
                 this.word = word;
             }
         }
+        public boolean searchFor(String word) {
+            WordNode current = head;
+            while (current != null) {
+                if (current.word.equals(word))
+                    return true;
+                current = current.next;
+            }
+            return false;
+
+        }
 
         public void printWordList() {
             int counter = 1;
@@ -188,11 +198,10 @@ public class VocabList{
         }
     }
 
-    public void removeVocab(Vocab vocabToRemove) {
+    public void removeVocab(VocabNode vocabToRemove) {
         VocabList.VocabNode current = head;
         while (current != null) {
-            if (current.vocabObject.equals(vocabToRemove)) {
-
+            if (current.equals(vocabToRemove)) {
 
                 // Update head if it's the first node
                 if (current == head) {
@@ -262,5 +271,23 @@ public class VocabList{
         }
         return size;
     }
+    public void searchWordInVocab(String word)
+    {
+        VocabNode current = head;
+        if(current == null)
+            System.out.println("You haven't added any topics yet. Make sure to add some topics and words before searching.");
+        while(current != null)
+        {
+            if(current.vocabObject.words.searchFor(word))
+            {
+                System.out.println(word + " has been found in topic " + "'"+current.vocabObject.topic + "'");
+            }
+            current = current.next;
+        }
+       if(!current.vocabObject.words.searchFor(word))
+           System.out.println("The word could not be found.");
+    }
+
+
 }
 
