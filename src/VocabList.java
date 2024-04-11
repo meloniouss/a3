@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
@@ -214,7 +218,13 @@ public class VocabList{
 
         }
 
-
+        public  void extracted(VocabNode current, PrintWriter writer) {
+            WordNode wordNode = current.vocabObject.words.head;
+            while (wordNode != null) {
+                writer.println(wordNode.word);
+                wordNode = wordNode.next;
+            }
+        }
         }
 
     public void printVocabList() {
@@ -327,6 +337,28 @@ public class VocabList{
             current = current.next;
         }
     }
+
+
+        public void writeToFile(String filePath) {
+            try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
+                VocabNode current = head;
+                while (current != null) {
+                    // Write the topic to the file preceded by '#'
+                    writer.println("#" + current.vocabObject.topic);
+
+                    // Iterate through words of the current vocabulary and write them
+                    current.vocabObject.words.extracted(current,writer);
+
+                    // Move to the next VocabNode
+                    current = current.next;
+                }
+                System.out.println("Vocab list successfully written to " + filePath);
+            } catch (IOException e) {
+                System.err.println("Error writing to file: " + e.getMessage());
+            }
+        }
+
+    
 
 }
 

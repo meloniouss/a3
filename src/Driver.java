@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -65,6 +66,7 @@ public class Driver {
                     searchLetters();
                     break;
                 case 9:
+                    writeToFile();
                     break;
                 case 0:
                     System.exit(0);
@@ -199,7 +201,10 @@ public class Driver {
     private static void importFile()
     {
         try{
-            File textFile = new File("src/input.txt");
+            Scanner input = new Scanner(System.in);
+            System.out.println("Enter the name of your file please: ");
+            String filePath = input.nextLine().trim();
+            File textFile = new File("src/"+filePath);
             Scanner reader = new Scanner(textFile);
             String line;
             String currentTopic = null;
@@ -325,4 +330,11 @@ public class Driver {
             searchLetters();
         }
     }
+    private static void writeToFile()
+    {
+        Scanner input = new Scanner(System.in);
+        String path = input.nextLine().trim();
+        vocabList.writeToFile(path + ".txt");
+    }
+
 }
