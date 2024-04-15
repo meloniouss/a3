@@ -146,11 +146,13 @@ public class VocabList{
             int counter = 1;
             WordNode current = head;
             while (current != null) {
-                System.out.println(counter++ + " " +current.word);
-                current = current.next;
+                for (int i = 0; i < 4 && current != null; i++) {
+                    System.out.printf("%-3d%-20s", counter++, current.word);
+                    current = current.next;
+                }
+                System.out.println(); // Move to the next line after printing four words
             }
         }
-
         public void addWord(String newWord) { // the words are added in alphabetical order
             WordNode currentNode = this.head;
             WordNode newWordnode = new WordNode(newWord);

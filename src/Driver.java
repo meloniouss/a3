@@ -160,7 +160,6 @@ public class Driver {
             System.out.println("Topic '" + insertAt + "' not found. Please try again.");
             insertAfter();
         }
-
     }
 
     private static void addWordsToTopic(Scanner input2, String toInsert) {
