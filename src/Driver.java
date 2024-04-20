@@ -132,6 +132,7 @@ public class Driver {
                 } else {
                     System.out.println("Invalid choice. Please select a valid topic number.");
                     showTopics();
+                    return;
                 }
             } catch (NullPointerException e) {
                 if (vocabList == null) {
@@ -232,11 +233,14 @@ public class Driver {
         System.out.println("Enter words for the topic '" + topic + "' (one word per line, empty line to finish):");
         String word = input.nextLine().trim();
 
+        //disabling "added at beginning" and "added first" messages
+        VocabList.loading = true;
+
         while (!word.isEmpty()) {
             vocabList.addWordToVocab(topic, word);
             word = input.nextLine().trim();
         }
-
+        VocabList.loading = false;
         VocabList.WordList.deleteDuplicateWords(vocabList.getVocabNodeWithTopicName((topic)));
         System.out.println("Words added successfully. (duplicates automatically removed!)");
     }
@@ -387,7 +391,6 @@ public class Driver {
 
                         break;
                     case 3:
-                        sc.nextLine();
                         String toDelete;
                         System.out.println("Please enter the word you would like to delete: ");
                         toDelete = sc.nextLine().trim();
